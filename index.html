@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actuator Status</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 400px;
+            height: 400px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .title {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            height: 100%;
+        }
+
+        .item {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .item:hover {
+            background: #f9f9f9;
+        }
+
+        .item-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot.red {
+            background: #f44336;
+        }
+
+        .dot.orange {
+            background: #ff9800;
+        }
+
+        .dot.green {
+            background: #4caf50;
+        }
+
+        .name {
+            font-weight: bold;
+        }
+
+        .status {
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">Actuator Status</div>
+        <div class="grid">
+            <div class="item" data-control="ailerons">
+                <div class="item-content">
+                    <div class="dot red"></div>
+                    <div class="name">Ailerons</div>
+                </div>
+                <div class="status">Critical</div>
+            </div>
+            <div class="item" data-control="elevators">
+                <div class="item-content">
+                    <div class="dot red"></div>
+                    <div class="name">Elevators</div>
+                </div>
+                <div class="status">Critical</div>
+            </div>
+            <div class="item" data-control="flaps">
+                <div class="item-content">
+                    <div class="dot green"></div>
+                    <div class="name">Flaps</div>
+                </div>
+                <div class="status">Normal</div>
+            </div>
+            <div class="item" data-control="rubber">
+                <div class="item-content">
+                    <div class="dot orange"></div>
+                    <div class="name">Rubber</div>
+                </div>
+                <div class="status">Warning</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const states = ['red', 'orange', 'green'];
+        const statusText = ['Critical', 'Warning', 'Normal'];
+
+        document.querySelectorAll('.item').forEach(item => {
+            item.addEventListener('click', function() {
+                const dot = this.querySelector('.dot');
+                const currentState = dot.classList.contains('red') ? 'red' : 
+                                   dot.classList.contains('orange') ? 'orange' : 'green';
+                const currentIndex = states.indexOf(currentState);
+                const nextIndex = (currentIndex + 1) % states.length;
+                const nextState = states[nextIndex];
+                
+                dot.classList.remove('red', 'orange', 'green');
+                dot.classList.add(nextState);
+                this.querySelector('.status').textContent = statusText[nextIndex];
+            });
+        });
+    </script>
+</body>
+</html>
